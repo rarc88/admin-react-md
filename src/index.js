@@ -5,8 +5,12 @@ import ReactDOM from 'react-dom'
 // Components
 import { App } from './App'
 
+import Context from './Context'
+
 const app = document.querySelector('#app')
 ReactDOM.render(
-  <App />
+  <Context.Provider>
+    <App />
+  </Context.Provider>
   , app
 )
