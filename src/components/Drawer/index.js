@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 
-import NestedList from '../Menu'
-import ImageAvatars from '../Avatar'
+import { Menu } from '../Menu'
+import { MyAvatar } from '../MyAvatar'
 
 export default function MiniDrawer({ drawerOpen, setDrawerOpen, drawerWidth }) {
   const useStyles = makeStyles(theme => ({
@@ -32,9 +32,10 @@ export default function MiniDrawer({ drawerOpen, setDrawerOpen, drawerWidth }) {
         width: theme.spacing(9) + 1,
       },
     },
-    AppBarHeigth: {
-      height: `63px`,
-    },
+    hide: {
+      visibility: 'hidden',
+      height: '55px',
+    }
   }));
   
   const classes = useStyles();
@@ -58,13 +59,13 @@ export default function MiniDrawer({ drawerOpen, setDrawerOpen, drawerWidth }) {
       }}
       open={drawerOpen}
     >
-      {
-        drawerOpen ? <ImageAvatars /> : <div className={classes.AppBarHeigth}></div>
-      }
+      <div className={!drawerOpen ? classes.hide : ''}>
+        <MyAvatar url="http://1.bp.blogspot.com/-ZHf5964XgP0/VEF6GhH40DI/AAAAAAAAFuA/R-F17UMSHn0/s1600/Logo%2BMarquez_Ant.png" />
+      </div>
 
       <Divider />
 
-      <NestedList drawerOpen={drawerOpen} handleDrawerOpen={handleDrawerOpen} />
+      <Menu drawerOpen={drawerOpen} handleDrawerOpen={handleDrawerOpen} />
     </Drawer>
   );
 }

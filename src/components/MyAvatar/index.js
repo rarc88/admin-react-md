@@ -14,12 +14,12 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ImageAvatars() {
+export const MyAvatar = ({ url = '/src/assets/images/default.png' }) => {
   const classes = useStyles();
 
   return (
     <Grid container justify="center" alignItems="center">
-      <Avatar alt="Hormiga Market" src="http://1.bp.blogspot.com/-ZHf5964XgP0/VEF6GhH40DI/AAAAAAAAFuA/R-F17UMSHn0/s1600/Logo%2BMarquez_Ant.png" className={classes.bigAvatar} />
+      <Avatar alt="MyAvatar" src={url} className={classes.bigAvatar} />
     </Grid>
   );
 }

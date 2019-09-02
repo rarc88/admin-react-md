@@ -22,9 +22,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Layout({ children }) {
+export const Layout = ({ children }) => {
   const classes = useStyles();
-  const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [drawerOpen, setDrawerOpen] = React.useState(true);
   const drawerWidth = 240;
 
   return (

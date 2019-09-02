@@ -13,8 +13,8 @@ import Container from '@material-ui/core/Container';
 
 import { useInputValue } from '../../hooks/useInputValue'
 import { useFetch } from '../../hooks/useFetch'
-import Loading from '../../components/Loading'
-import CustomizedSnackbars from '../../components/Snackbar'
+import { Loading } from '../../components/Loading'
+import { MySnackbar } from '../../components/MySnackbar'
 
 import { Context } from '../../Context'
 
@@ -59,37 +59,34 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SignIn() {
-  const classes = useStyles();
-
+const useSignIn = () => {
   const { auth } = useContext(Context)
   const { loading, data, fetchData } = useFetch()
-  const email = useInputValue('')
-  const password = useInputValue('')
-  const [validate, setValidate] = useState(true)
 
   const handleSubmit = (e) => {
-      e.preventDefault()
-      const tmp = email.value !== '' && password.value !== ''
-      setValidate(tmp)
-      if(!tmp)
-        return
+    e.preventDefault()
 
-      fetchData('/auth/signin', { email: email.value, password: password.value })
-      .then(json => {
-        if(json.auth) auth.setItem(json.token)
-      })
+    const data = new FormData(e.target)
+    fetchData({ resource: '/auth/signin', body: data })
+    .then(json => {
+      if(json.status) auth.setItem(json.data.token)
+    })
   }
+
+  return { loading, data, handleSubmit }
+}
+
+export default function SignIn() {
+  const classes = useStyles();
+  const email = useInputValue('')
+  const password = useInputValue('')
+  const { loading, data, handleSubmit } = useSignIn()
 
   return (
     <Container component="main" maxWidth="xs">
 
       {
-        (data && (data.auth === false)) && <CustomizedSnackbars variant="error" message={data.message} show={true} />
-      }
-
-      {
-        !validate && <CustomizedSnackbars variant="warning" message="Debe llenar los campos" show={true} callback={setValidate} />
+        (data && (data.status === false)) && <MySnackbar variant="error" message={data.message} show={true} />
       }
 
       <CssBaseline />
@@ -103,32 +100,28 @@ export default function SignIn() {
           Iniciar Sesión
         </Typography>
 
-        <form className={classes.form} noValidate onSubmit={handleSubmit}>
+        <form className={classes.form} onSubmit={handleSubmit}>
           <TextField
-            error={ !validate && !email.value }
             variant="outlined"
             margin="normal"
-            required
             fullWidth
-            id="email"
             label="Correo Electrónico"
-            name="email"
             autoComplete="email"
             autoFocus
-            { ...email }
+            required
+            name="email"
+            { ...email.controls }
           />
           <TextField
-            error={ !validate && !password.value }
             variant="outlined"
             margin="normal"
-            required
             fullWidth
-            name="password"
             label="Contraseña"
             type="password"
-            id="password"
             autoComplete="current-password"
-            { ...password }
+            required
+            name="password"
+            { ...password.controls }
           />
 
           <Button
@@ -155,9 +148,10 @@ export default function SignIn() {
             </Grid>
           </Grid> */}
 
-          { loading && <Loading /> }
         </form>
       </div>
+
+      {loading && <Loading />}
 
       <Box mt={8}>
         <Copyright />

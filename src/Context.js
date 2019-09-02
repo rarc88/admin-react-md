@@ -1,4 +1,4 @@
-import React, { useState, createContext } from 'react'
+import React, { createContext } from 'react'
 
 import { useLocalStorage } from './hooks/useLocalStorage'
 
@@ -6,9 +6,11 @@ export const Context = createContext()
 
 const Provider = ({ children }) => {
   const auth = useLocalStorage('token')
+  const BASE_URL = 'http://localhost:3000/api'
 
   const value = {
-    auth
+    auth,
+    BASE_URL
   }
 
   return (

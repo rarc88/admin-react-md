@@ -1,17 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import SendIcon from '@material-ui/icons/Send';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import StarBorder from '@material-ui/icons/StarBorder';
 
-import { Link } from './styles'
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
+import SettingsIcon from '@material-ui/icons/Settings';
+import PermIdentityIcon from '@material-ui/icons/PermIdentity';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
+import StorageIcon from '@material-ui/icons/Storage';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+import AppsIcon from '@material-ui/icons/Apps';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
+import CategoryIcon from '@material-ui/icons/Category';
+import EventIcon from '@material-ui/icons/Event';
+import SpaIcon from '@material-ui/icons/Spa';
+import StraightenIcon from '@material-ui/icons/Straighten';
+
+import { MenuItem } from '../MenuItem'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,69 +31,82 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function NestedList(props) {
-  const classes = useStyles();
-  const [open, setOpen] = React.useState('');
+export const Menu = ({ drawerOpen, handleDrawerOpen }) => {
+  const classes = useStyles()
+  const [open, setOpen] = useState('')
 
-  React.useEffect(() => {
-    !props.drawerOpen && setOpen('')
-  }, [props.drawerOpen])
+  useEffect(() => {
+    !drawerOpen && setOpen('')
+  }, [drawerOpen])
 
   function handleClick(value) {
-    value === open ? setOpen('') : setOpen(value);
-    value != '' && props.handleDrawerOpen(true)
+    value === open ? setOpen('') : setOpen(value)
+    value != '' && handleDrawerOpen(true)
   }
 
   return (
-    <List
-      component="nav"
-      aria-labelledby="nested-list-subheader"
-      className={classes.root}
-    >
-      <ListItem button>
-        <Link to={'/administrators'}>
-          <ListItemIcon>
-            <SendIcon />
-          </ListItemIcon>
-          <ListItemText primary="Menu 1" />
-        </Link>
-      </ListItem>
-
-      <ListItem button onClick={() => handleClick('Menu 2')}>
-        <ListItemIcon>
-          <InboxIcon />
-        </ListItemIcon>
-        <ListItemText primary="Menu 2" />
-        {open === 'Menu 2' ? <ExpandLess /> : <ExpandMore />}
-      </ListItem>
-      <Collapse in={open === 'Menu 2'} timeout="auto" unmountOnExit>
+    <List component="nav" aria-labelledby="nested-list-subheader" className={classes.root}>
+      <MenuItem title="Administracion" url="/administration" subMenu={true} expand={true} open={open} handle={handleClick}>
+      <SettingsIcon />
+      </MenuItem>
+      <Collapse in={open === 'Administracion'} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem button className={classes.nested}>
-            <ListItemIcon>
-              <StarBorder />
-            </ListItemIcon>
-            <ListItemText primary="SubMenu 2.1" />
-          </ListItem>
+          <MenuItem title="Administradores" url="/administrators" subMenu={true}>
+            <SupervisorAccountIcon />
+          </MenuItem>
+
+          <MenuItem title="Roles" url="/roles" subMenu={true}>
+            <PermIdentityIcon />
+          </MenuItem>
+
+          <MenuItem title="Permisos" url="/permissions" subMenu={true}>
+            <LockOpenIcon />
+          </MenuItem>
         </List>
       </Collapse>
 
-      <ListItem button onClick={() => handleClick('Menu 3')}>
-        <ListItemIcon>
-          <InboxIcon />
-        </ListItemIcon>
-        <ListItemText primary="Menu 3" />
-        {open === 'Menu 3' ? <ExpandLess /> : <ExpandMore />}
-      </ListItem>
-      <Collapse in={open === 'Menu 3'} timeout="auto" unmountOnExit>
+      <MenuItem title="Inventario" url="/inventory" subMenu={true} expand={true} open={open} handle={handleClick}>
+        <StorageIcon />
+      </MenuItem>
+      <Collapse in={open === 'Inventario'} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem button className={classes.nested}>
-            <ListItemIcon>
-              <StarBorder />
-            </ListItemIcon>
-            <ListItemText primary="SubMenu 3.1" />
-          </ListItem>
+          <MenuItem title="Productos" url="/items" subMenu={true}>
+            <CategoryIcon />
+          </MenuItem>
+
+          <MenuItem title="Lotes" url="/lots" subMenu={true}>
+            <EventIcon />
+          </MenuItem>
+
+          <MenuItem title="Proveedores" url="/providers" subMenu={true}>
+            <LocalShippingIcon />
+          </MenuItem>
+
+          <MenuItem title="Categorias" url="/categories" subMenu={true}>
+            <AppsIcon />
+          </MenuItem>
+
+          <MenuItem title="Medidas" url="/measures" subMenu={true}>
+            <StraightenIcon />
+          </MenuItem>
+
+          <MenuItem title="Marcas" url="/brands" subMenu={true}>
+            <SpaIcon />
+          </MenuItem>
         </List>
       </Collapse>
+
+      <MenuItem title="Usuarios" url="/users">
+        <AccountBoxIcon />
+      </MenuItem>
+
+      <MenuItem title="Ventas" url="/sales">
+        <MonetizationOnIcon />
+      </MenuItem>
+
+      <MenuItem title="Cuentas" url="/accounts">
+        <AccountBalanceIcon />
+      </MenuItem>
     </List>
-  );
+  )
 }

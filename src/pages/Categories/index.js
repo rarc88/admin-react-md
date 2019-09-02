@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 
-export const Administrators = ({ children }) => {
+export const Categories = ({ children }) => {
   return (
     <Fragment>
       { children }

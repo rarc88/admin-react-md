@@ -84,7 +84,7 @@ export default function MyAppBar({ drawerOpen, setDrawerOpen, drawerWidth }) {
         
         <Typography variant="h6" noWrap className={classes.title}>
           <Link to={'/'}>
-            Admin
+            LA HORMIGA MARKET
           </Link>
         </Typography>
         
